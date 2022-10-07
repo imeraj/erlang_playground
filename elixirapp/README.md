@@ -1,7 +1,7 @@
 elixirapp
 =====
 
-An OTP application
+An OTP application. Access Elixir from Erlang
 
 Build
 -----
