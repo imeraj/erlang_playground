@@ -1,1 +1,1 @@
-# erlang_playground
+# Erlang projects 
