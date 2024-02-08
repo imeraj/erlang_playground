@@ -23,7 +23,7 @@ to_decimal(Number) ->
 last(List) when is_list(List) ->
     io:format("~p~n", ['Elixir.List':last(List)]).
 
-downcase(Bin) when is_binary(Bin) ->~~
+downcase(Bin) when is_binary(Bin) ->
     io:format("~s~n", ['Elixir.String':downcase(Bin)]).
 
 
