@@ -1,6 +1,8 @@
 -module(tut2).
 -export([start/0, ping/2, pong/0]).
 
+-define(COUNT, 3).
+
 ping(0, Pong_PID) ->
   Pong_PID ! finished,
   io:format("Ping finished~n", []);
@@ -26,4 +28,4 @@ pong() ->
 
 start() ->
   Pong_PID = spawn(tut2, pong, []),
-  spawn(tut2, ping, [3, Pong_PID]).
+  spawn(tut2, ping, [?COUNT, Pong_PID]).
