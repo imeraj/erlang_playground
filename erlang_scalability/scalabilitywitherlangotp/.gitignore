@@ -1,0 +1,7 @@
+*/*.beam
+
+.idea/
+
+*/.idea
+
+*/*.extprg
