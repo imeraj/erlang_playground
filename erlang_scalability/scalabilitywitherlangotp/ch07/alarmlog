@@ -1,6 +1,0 @@
-Id:1 Time:{6,41,21} Date:{2024,4,21}
-Event:{set_alarm,{no_frequency,<0.99.0>}}
-Id:2 Time:{6,41,49} Date:{2024,4,21}
-Event:{clear_alarm,{no_frequency,<0.99.0>}}
-Id:3 Time:{6,42,31} Date:{2024,4,21}
-Unknown:sending_junk
