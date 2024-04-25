@@ -11,7 +11,7 @@ stop() ->
 
 init(_) ->
   ChildSpecList = [child(freq_overload), child(frequency)],
-  SupFlags = #{strategy => one_for_one, intensity => 2, period => 3000},
+  SupFlags = #{strategy => rest_for_one, intensity => 2, period => 3000},
   {ok, {SupFlags, ChildSpecList}}.
 
 child(Module) ->
