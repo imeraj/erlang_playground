@@ -44,7 +44,11 @@ format_status(_Opt, [_ProcDict, {Available, Allocated}]) ->
   {data, [{"State", {{available, Available}, {allocated, Allocated}}}]}.
 
 %% Helper functions
-get_frequencies() -> [10,11,12,13,14,15].
+get_frequencies() ->
+  case application:get_env(frequencies) of
+    {ok, FreqList} -> FreqList;
+    undefined -> [10, 11, 12, 13, 14, 15]
+  end.
 
 allocate({[], Allocated}, _Pid) -> {{[], Allocated}, {error, no_frequency}};
 allocate({[Freq|Free], Allocated}, Pid) ->
