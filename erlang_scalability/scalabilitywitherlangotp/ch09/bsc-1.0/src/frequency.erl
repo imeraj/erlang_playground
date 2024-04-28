@@ -8,16 +8,16 @@
 %% Client functions
 start_link() ->
   process_flag(trap_exit, true),
-  gen_server:start_link({local, ?MODULE}, ?MODULE, [], [{debug, [statistics, trace, log]}]).
+  gen_server:start_link({global, ?MODULE}, ?MODULE, [], [{debug, [statistics, trace, log]}]).
 
 allocate() ->
-  gen_server:call(?MODULE, {allocate, self()}).
+  gen_server:call({global, ?MODULE}, {allocate, self()}).
 
 deallocate(Frequency) ->
-  gen_server:cast(?MODULE, {deallocate, Frequency}).
+  gen_server:cast({global, ?MODULE}, {deallocate, Frequency}).
 
 stop() ->
-  gen_server:cast(?MODULE, stop).
+  gen_server:cast({global, ?MODULE}, stop).
 
 %% Callbacks
 init(_Args) ->

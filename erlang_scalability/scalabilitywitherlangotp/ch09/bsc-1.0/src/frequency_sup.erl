@@ -4,10 +4,10 @@
 -export([stop/0]).
 
 start_link() ->
-  supervisor:start_link({local, ?MODULE}, ?MODULE, []).
+  supervisor:start_link({global, ?MODULE}, ?MODULE, []).
 
 stop() ->
-  exit(whereis(?MODULE), shutdown).
+  exit(global:whereis_name({global, ?MODULE}), shutdown).
 
 init(_) ->
   ChildSpecList = [child(freq_overload), child(frequency)],

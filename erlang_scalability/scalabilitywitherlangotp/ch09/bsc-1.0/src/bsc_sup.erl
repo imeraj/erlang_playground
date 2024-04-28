@@ -5,9 +5,9 @@
 -export([stop/0]).
 
 start_link() ->
-  supervisor:start_link({local,?MODULE}, ?MODULE, []).
+  supervisor:start_link({global,?MODULE}, ?MODULE, []).
 
-stop() -> exit(whereis(?MODULE), shutdown).
+stop() -> exit(global:whereis_name({global,?MODULE}), shutdown).
 
 init(_) ->
   ChildSpecList = [child(frequency_sup, supervisor), child(simple_phone_sup, supervisor)],
