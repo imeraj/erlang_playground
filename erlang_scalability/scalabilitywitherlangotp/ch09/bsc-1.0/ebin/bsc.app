@@ -15,5 +15,6 @@
     ]},
     {registered, [bsc_sup, frequency, frequency_sup, freq_overload, simple_phone_sup]},
     {applications, [kernel, stdlib, sasl]},
+    {start_phases, [{init, []}, {admin, []}, {oper, []}]},
     {env, []},
     {mod, {bsc, []}}]}.
