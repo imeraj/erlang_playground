@@ -35,11 +35,29 @@ free(Name, Parent, Debug) ->
       Pid ! {self(), ok},
       busy(Pid, Name, Parent, Debug);
     stop ->
-      ok
+      terminate(shutdown, Name);
+    {'EXIT', Parent, Reason} ->
+      terminate(Reason, Name)
   end.
 
 busy(Pid, Name, Parent, Debug) ->
   receive
     {signal, Pid} ->
-      free(Name, Parent, Debug)
+      free(Name, Parent, Debug);
+    {'EXIT', Parent, Reason} ->
+      exit(Pid, Reason),
+      terminate(Reason, Name)
+  end.
+
+terminate(Reason, Name) ->
+  unregister(Name),
+  terminate(Reason).
+
+terminate(Reason) ->
+  receive
+    {wait, Pid} ->
+      exit(Pid, Reason),
+      terminate(Reason)
+  after 0 ->
+    exit(Reason)
   end.
