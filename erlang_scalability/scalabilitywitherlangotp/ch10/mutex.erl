@@ -1,6 +1,7 @@
 -module(mutex).
 -export([start_link/1, start_link/2, init/3, stop/1]).
 -export([wait/1, signal/1]).
+-export([system_continue/3, system_terminate/4]).
 
 wait(Name) ->
   Name ! {wait, self()},
@@ -36,6 +37,8 @@ free(Name, Parent, Debug) ->
       busy(Pid, Name, Parent, Debug);
     stop ->
       terminate(shutdown, Name);
+    {system,From,Msg} ->
+      sys:handle_system_msg(Msg, From, Parent, ?MODULE, Debug, {free, Name});
     {'EXIT', Parent, Reason} ->
       terminate(Reason, Name)
   end.
@@ -44,10 +47,24 @@ busy(Pid, Name, Parent, Debug) ->
   receive
     {signal, Pid} ->
       free(Name, Parent, Debug);
+    {system,From,Msg} ->
+      sys:handle_system_msg(Msg, From, Parent, ?MODULE, Debug, {busy, Name, Pid});
     {'EXIT', Parent, Reason} ->
       exit(Pid, Reason),
       terminate(Reason, Name)
   end.
+
+system_continue(Parent, Debug, {free, Name}) ->
+  free(Name, Parent, Debug);
+system_continue(Parent, Debug, {busy, Name, Pid}) ->
+  busy(Pid, Name, Parent, Debug).
+
+system_terminate(Reason, _Parent, _Debug, {free, Name}) ->
+  terminate(Reason, Name);
+system_terminate(Reason, _Parent, _Debug, {busy, Name, Pid}) ->
+  exit(Pid, Reason),
+  terminate(Reason, Name).
+
 
 terminate(Reason, Name) ->
   unregister(Name),
