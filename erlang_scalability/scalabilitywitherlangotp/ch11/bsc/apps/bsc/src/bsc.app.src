@@ -1,0 +1,27 @@
+{application, bsc,
+ [{description, "Base Station Controller"},
+  {vsn, "1.0"},
+  {registered, [bsc_sup, frequency, frequency_sup, freq_overload, simple_phone_sup]},
+  {mod, {bsc, []}},
+  {applications,
+   [kernel,
+    stdlib,
+    sasl
+   ]},
+  {env,[]},
+  {modules, [bsc,
+   bsc_sup,
+   counters,
+   mlogger,
+   frequency,
+   freq_overload,
+   frequency_sup,
+   simple_phone_sup,
+   phone_fsm,
+   phone,
+   hlr
+  ]},
+
+  {licenses, ["Apache-2.0"]},
+  {links, []}
+ ]}.
