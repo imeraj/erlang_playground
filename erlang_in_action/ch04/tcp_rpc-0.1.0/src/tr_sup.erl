@@ -2,12 +2,9 @@
 -behaviour(supervisor).
 
 -export([start_link/0, init/1]).
--export([stop/0]).
 
 start_link() ->
-  supervisor:start_link({local,?MODULE}, ?MODULE, []).
-
-stop() -> exit(global:whereis_name({local,?MODULE}), shutdown).
+  supervisor:start_link({global,?MODULE}, ?MODULE, []).
 
 init(_) ->
   ChildSpecList = [child(tr_server, worker)],
