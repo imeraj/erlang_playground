@@ -1,7 +1,7 @@
 -module(sc_sup).
 -behaviour(supervisor).
 
--export([start_link/0, start_child/2]).
+-export([start_link/0]).
 -export([init/1]).
 
 -define(SERVER, ?MODULE).
@@ -9,14 +9,11 @@
 start_link() ->
   supervisor:start_link({local,?SERVER}, ?MODULE, []).
 
-start_child(Value, LeaseTime) ->
-  supervisor:start_child(?SERVER, [Value, LeaseTime]).
-
 init(_) ->
-  ChildSpecList = [child(sc_element, worker)],
-  RestartStrategy = {simple_one_for_one, 0, 1},
+  ChildSpecList = [child(sc_element_sup, supervisor), child(sc_event, worker)],
+  RestartStrategy = {one_for_one, 4, 3600},
   {ok,{RestartStrategy, ChildSpecList}}.
 
 child(Module, Type) ->
   {Module, {Module, start_link, []},
-    temporary, brutal_kill, Type, [Module]}.
+    permanent, 2000, Type, [Module]}.
