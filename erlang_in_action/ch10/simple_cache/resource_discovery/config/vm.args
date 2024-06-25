@@ -1,0 +1,6 @@
+-sname resource_discovery
+
+-setcookie resource_discovery_cookie
+
++K true
++A30
