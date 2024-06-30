@@ -1,0 +1,6 @@
+-sname gen_web_server
+
+-setcookie gen_web_server_cookie
+
++K true
++A30
