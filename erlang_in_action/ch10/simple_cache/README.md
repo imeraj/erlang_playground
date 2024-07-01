@@ -17,7 +17,7 @@ Run
 ---
 * rebar3 shell --sname contact2
 * rebar3 shell --sname contact1
-* In one shell - application:start(tcp_interface).
+* In one shell - application:start(http_interface).
 
 
 
