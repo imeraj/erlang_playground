@@ -48,7 +48,6 @@ handle_info({tcp, _Sock, Data}, State) when is_binary(Data) ->
      true ->
        {stop, normal, handle_http_request(NewState)}
   end;
-
 handle_info({tcp_closed, _Sock}, State) ->
   {stop, normal, State};
 handle_info(timeout, #state{lsock = LSock, parent = Parent} = State) ->
