@@ -1,0 +1,1 @@
+-define(GREETING, "Hello, World!~n").

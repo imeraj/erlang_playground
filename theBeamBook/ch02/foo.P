@@ -1,0 +1,11 @@
+-file("foo.erl", 1).
+
+-module(foo).
+
+-export([hello_world/0]).
+
+hello_world() ->
+    io:format("Hello, World!~n").
+
+
+
