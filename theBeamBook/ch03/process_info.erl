@@ -1,5 +1,4 @@
 -module(process_info).
-
 -export([info/1, backtrace/1, heap_sort/0]).
 
 info(Name) when is_atom(Name) ->
