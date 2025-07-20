@@ -36,6 +36,8 @@ parse_chunks([{"CInf", Size, Chunk} | Rest], Acc) ->
     <<Bin:Size/binary, _Pad/binary>> = Chunk,
      CInfo = binary_to_term(Bin),
      parse_chunks(Rest,[{compile_info,CInfo} | Acc]);
+parse_chunks([{"LocT", _Size, <<_NumofEntries:32/integer, FuncTable/binary>>}| Rest], Acc) ->
+    parse_chunks(Rest, [{local_func_table, parse_func_table(FuncTable)} | Acc]);
 parse_chunks([_Chunk|Rest], Acc) ->
     parse_chunks(Rest, Acc);
 parse_chunks([], Acc) -> Acc.
@@ -51,6 +53,10 @@ parse_exports(<<>>) -> [].
 parse_imports(<<Module:32/integer, Function:32/integer, Arity:32/integer, Rest/binary>>) ->
     [{Module, Function, Arity} | parse_imports(Rest)];
 parse_imports(<<>>) -> [].
+
+parse_func_table(<<Function:32/integer, Arity:32/integer, Label:32/integer, Rest/binary>>) ->
+    [{Function, Arity, Label} | parse_func_table(Rest)];
+parse_func_table(<<>>) -> [].
 
 parse_code_info(<<InstructionSet:32/integer,
                       OpCodeMax:32/integer,
