@@ -38,6 +38,18 @@ parse_chunks([{"CInf", Size, Chunk} | Rest], Acc) ->
      parse_chunks(Rest,[{compile_info,CInfo} | Acc]);
 parse_chunks([{"LocT", _Size, <<_NumofEntries:32/integer, FuncTable/binary>>}| Rest], Acc) ->
     parse_chunks(Rest, [{local_func_table, parse_func_table(FuncTable)} | Acc]);
+parse_chunks([{"LitT", _ChunkSize, <<_UnCompressedTableSize:32, Compressed/binary>>} | Rest], Acc) ->
+    <<_NumLiterals:32, Table/binary>> = zlib:uncompress(Compressed),
+    Literals = parse_literals(Table),
+    parse_chunks(Rest, [{literals, Literals} | Acc]);
+parse_chunks([{"Abst", _ChunkSize, <<>>} | Rest], Acc) ->
+    parse_chunks(Rest,Acc);
+parse_chunks([{"Abst", _ChunkSize, <<AbstractCode/binary>>} | Rest], Acc) ->
+    parse_chunks(Rest,[{abstract_code,binary_to_term(AbstractCode)}|Acc]);
+parse_chunks([{"Meta", Size, Chunk} | Rest], Acc) ->
+    <<MetaInfo:Size/binary, _Pad/binary>> = Chunk,
+    Meta = binary_to_term(MetaInfo),
+    parse_chunks(Rest, [{meta, Meta}|Acc]);
 parse_chunks([_Chunk|Rest], Acc) ->
     parse_chunks(Rest, Acc);
 parse_chunks([], Acc) -> Acc.
@@ -45,6 +57,10 @@ parse_chunks([], Acc) -> Acc.
 parse_atoms(<<AtomLength, Atom:AtomLength/binary, Rest/binary>>) when AtomLength > 0 ->
     [list_to_atom(binary_to_list(Atom)) | parse_atoms(Rest)];
 parse_atoms(_Alignment) -> [].
+
+parse_literals(<<Size:32, Literal:Size/binary, Rest/binary>>) ->
+    [binary_to_term(Literal) | parse_literals(Rest)];
+parse_literals(<<>>) -> [].
 
 parse_exports(<<Function:32/integer, Arity:32/integer, Label:32/integer, Rest/binary>>) ->
     [{Function, Arity, Label} | parse_exports(Rest)];
