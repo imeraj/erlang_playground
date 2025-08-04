@@ -1,0 +1,6 @@
+-sname 'my_first_app'
+
+-setcookie my_first_app_cookie
+
++K true
++A30
