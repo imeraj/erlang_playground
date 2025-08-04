@@ -3,5 +3,6 @@
          index/1
         ]).
 
-index(_Req) ->
+index(Req = #{auth_data := User}) ->
+    io:format("User: ~p~n", [User]),
     {ok, [{message, "Hello world!"}]}.
