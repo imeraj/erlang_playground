@@ -1,0 +1,19 @@
+%% -*- mode: erlang;erlang-indent-level: 4;indent-tabs-mode: nil -*-
+{application, personaldb,
+ [{description, "personaldb managed by Nova"},
+  {vsn, git},
+  {registered, []},
+  {mod, { personaldb_app, []}},
+  {included_applications, []},
+  {applications,
+   [
+    kernel,
+    stdlib,
+    nova
+   ]},
+  {env,[]},
+  {modules, []},
+  {maintainers, []},
+  {licenses, ["Apache 2.0"]},
+  {links, []}
+ ]}.

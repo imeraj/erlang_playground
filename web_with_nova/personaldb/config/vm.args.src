@@ -1,0 +1,6 @@
+-sname 'personaldb'
+
+-setcookie personaldb_cookie
+
++K true
++A30
