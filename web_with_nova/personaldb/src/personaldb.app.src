@@ -9,7 +9,8 @@
    [
     kernel,
     stdlib,
-    nova
+    nova,
+    eredis
    ]},
   {env,[]},
   {modules, []},
