@@ -1,8 +1,8 @@
 -module(personaldb_main_controller).
 
--export([add/1, index/1, get_by_id/1, delete/1, update/1]).
+-export([create/1, list/1, get/1, delete/1, update/1]).
 
-add(#{json := #{<<"age">> := Age, <<"id">> := Id}}) ->
+create(#{json := #{<<"age">> := Age, <<"id">> := Id}}) ->
     try
         {ok, Port} = eredis:start_link(),
         {ok, Results} = eredis:q(Port, ["hset", "users", Id, Age]),
@@ -16,7 +16,7 @@ add(#{json := #{<<"age">> := Age, <<"id">> := Id}}) ->
              #{<<"error">> => Error, <<"cause">> => Cause}}
     end.
 
-index(_Req) ->
+list(_Req) ->
     try
         {ok, Port} = eredis:start_link(),
         {ok, Results} = eredis:q(Port, ["hgetall", "users"]),
@@ -31,7 +31,7 @@ index(_Req) ->
              #{<<"error">> => Error, <<"cause">> => Cause}}
     end.
 
-get_by_id(#{bindings := #{<<"id">> := UserId}}) ->
+get(#{bindings := #{<<"id">> := UserId}}) ->
     try
         {ok, Port} = eredis:start_link(),
         case eredis:q(Port, ["hget", "users", UserId]) of

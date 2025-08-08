@@ -9,9 +9,9 @@ routes(_Environment) ->
     [#{prefix => "/users",
        security => false,
        routes =>
-           [{"/", fun personaldb_main_controller:add/1, #{methods => [post]}},
-            {"/", fun personaldb_main_controller:index/1, #{methods => [get]}},
-            {"/:id", fun personaldb_main_controller:get_by_id/1, #{methods => [get]}},
+           [{"/", fun personaldb_main_controller:create/1, #{methods => [post]}},
+            {"/", fun personaldb_main_controller:list/1, #{methods => [get]}},
+            {"/:id", fun personaldb_main_controller:get/1, #{methods => [get]}},
             {"/:id", fun personaldb_main_controller:update/1, #{methods => [patch]}},
             {"/:id", fun personaldb_main_controller:delete/1, #{methods => [delete]}},
             {"/heartbeat", fun(_) -> {status, 200} end, #{methods => [get]}}]}].
