@@ -66,7 +66,7 @@ terminate([]) -> [];
 terminate([{Handler, Data} | Rest]) ->
     [{Handler, Handler:terminate(Data)} | terminate(Rest)].
 
- call(Name, Msg) ->
+call(Name, Msg) ->
      Name ! {request, self(), Msg},
      receive {reply, Reply} -> Reply end.
 
