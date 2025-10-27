@@ -4,7 +4,10 @@
 
 %% Client API
 start() ->
-    register(?MODULE, spawn(?MODULE, init, [])).
+    Pid = spawn(?MODULE, init, []),
+    register(?MODULE, Pid),
+    {ok, Pid}.
+
 stop() -> call(stop).
 allocate() -> call(allocate).
 deallocate(Freq) -> call({deallocate, Freq}).
