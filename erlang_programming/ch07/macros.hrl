@@ -1,0 +1,2 @@
+-define(MULTIPLE(X,Y), X rem Y == 0).
+-define(VALUE(Call), io:format("~p = ~p~n", [??Call, Call])).

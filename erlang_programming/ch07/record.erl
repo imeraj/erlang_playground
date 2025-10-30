@@ -4,7 +4,6 @@
 -record(name, {first, last}).
 -record(person, {name=#name{}, age = 0, phone}).
 
-
 birthday(#person{age=Age} = P) ->
     P#person{age=Age+1}.
 
