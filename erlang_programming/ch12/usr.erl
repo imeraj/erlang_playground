@@ -1,6 +1,6 @@
 -module(usr).
 -export([start_link/0, start_link/1, stop/0]).
--export([init/1, terminate/2, handle_cast/2, handle_call/3]).
+-export([init/1, terminate/2, handle_cast/2, handle_call/3, handle_info/2]).
 -export([add_usr/3, lookup_id/1, delete_usr/1, set_service/3, set_status/2, delete_disabled/0]).
 -behaviour(gen_server).
 
@@ -86,6 +86,9 @@ handle_call(delete_disabled, _From, LoopData) ->
 
 handle_cast(stop, LoopData) ->
     {stop, normal, LoopData}.
+
+handle_info(_Msg, LoopData) ->
+    {noreply, LoopData}.
 
 terminate(_Reason, _LoopData) ->
     usr_db:close_tables().
