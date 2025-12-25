@@ -4,12 +4,14 @@
 -export([add_usr/3, lookup_id/1, delete_usr/1, set_service/3, set_status/2, delete_disabled/0]).
 -behaviour(gen_server).
 
--include("usr.hrl").
+-include("../includes/usr.hrl").
 
 %% Exported client functions
 %% Operation & Maintenance API
 
-start_link() -> start_link("usrDb").
+start_link() ->
+    {ok, FileName} = application:get_env(dets_name),
+    start_link(FileName).
 
 start_link(FileName) ->
     gen_server:start_link({local, ?MODULE}, ?MODULE, FileName, []).

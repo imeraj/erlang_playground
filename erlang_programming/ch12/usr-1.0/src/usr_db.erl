@@ -10,7 +10,7 @@
 %%% Description : Database API for subscriber DB
 
 -module(usr_db).
--include("usr.hrl").
+-include("../includes/usr.hrl").
 -export([create_tables/1, close_tables/0, add_usr/1, update_usr/1, delete_usr/1,
          lookup_id/1, lookup_msisdn/1, restore_backup/0, delete_disabled/0]).
 
