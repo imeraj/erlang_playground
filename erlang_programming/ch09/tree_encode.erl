@@ -18,7 +18,7 @@ deserialize([_|Ls]) ->
     listToTree(Ls).
 
 listToTree([2,N]) ->
-    [2,N];
+    {leaf,N};
 listToTree([N]) ->
     {leaf, N};
 listToTree([M|Rest]) ->
