@@ -11,6 +11,7 @@
 
 -module(usr_db).
 -include("../includes/usr.hrl").
+-include_lib("eunit/include/eunit.hrl").
 -export([create_tables/1, close_tables/0, add_usr/1, update_usr/1, delete_usr/1,
          lookup_id/1, lookup_msisdn/1, restore_backup/0, delete_disabled/0]).
 
@@ -103,3 +104,29 @@ loop_delete_disabled(PhoneNo) ->
         ok
     end,
     loop_delete_disabled(ets:next(usrRam, PhoneNo)).
+
+% Testing
+setup1_test() ->
+    {spawn,
+        {setup,
+            fun() -> create_tables("UsrTabFile") end,
+            fun(_) -> ?cmd("rm UsrTabFile") end,
+            ?_assertNotMatch({error, instance}, lookup_id(1))
+        }
+    }.
+
+setup2_test() ->
+    {spawn,
+        {setup,
+            fun() ->
+                create_tables("UsrTabFile"),
+                Seq = lists:seq(1, 100000),
+                Add = fun(Id) ->
+                    add_usr(#usr{msisdn = 70000000 + Id, id = Id, plan = prepay, services = [data, sms, lbs]})
+                end,
+                lists:foreach(Add, Seq)
+            end,
+            fun(_) -> ?cmd("rm UsrTabFile") end,
+            ?_assertMatch({error, #usr{status = enabled}}, lookup_id(1))
+        }
+    }.
